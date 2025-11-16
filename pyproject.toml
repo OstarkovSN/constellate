@@ -1,0 +1,125 @@
+[project]
+name = "constellate"
+version = "0.1.0"
+description = "A lightweight web app for machine learning communities to collaboratively curate and discuss research articles"
+authors = [{ name = "OstarkovSN"}]
+dependencies = ["email-validator>=2.3.0,<3", "flask>=3.1.2,<4", "flask-login>=0.6.3,<0.7", "flask-wtf>=1.2.2,<2", "flask-sqlalchemy>=3.1.1,<4", "sqlalchemy>=2.0.44,<3", "werkzeug>=3.1.3,<4", "wtforms>=3.2.1,<4", "click>=8.3.1,<9"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["win-64", "linux-64", "osx-64"]
+
+[tool.pixi.dependencies]
+python = ">=3.10,<3.13"
+
+[tool.pixi.tasks]
+start = { cmd = "python app.py" }
+
+[tool.pixi.environments]
+dev = ["testing", "linting"]
+prod = []
+
+[tool.pixi.feature.testing.pypi-dependencies]
+pytest-cov = ">=4.1.0"
+pytest = ">=7.4.0"
+
+[tool.pixi.feature.testing.tasks]
+test = { cmd = "pytest" }
+
+[tool.pixi.feature.linting.dependencies]
+ruff = ">=0.1.0"
+
+[tool.pixi.feature.linting.tasks]
+lint = { cmd = "ruff check ." }
+lintfix = { cmd = "ruff check --fix ." }
+format = { cmd = "ruff format ." }
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "PLR2004",  # Magic values in tests are fine
+    "S101",     # Use of assert in tests
+    "ANN",      # Type annotations in tests are optional
+    "ARG",      # Unused arguments in fixtures are fine
+    "S105",     # Hardcoded passwords in tests are fine
+]
+[tool.ruff]
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    ".pixi",
+    "venv",
+    ".neptune",
+]
+
+line-length = 100
+indent-width = 4
+
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["BLE", "D401", "FBT001", "TD003"]
+extend-safe-fixes = ["D400", "ANN2"]
+fixable = ["ALL"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
+
+[tool.coverage.run]
+source = ["."]
+omit = [
+    "*/tests/*",
+    "*/test_*.py",
+    "*/.pixi/*",
+    "*/.venv/*",
+    "*/venv/*",
+    "*/__pycache__/*",
+    "*/site-packages/*",
+    "*/build/*",
+    "*/dist/*",
+    "*/instance/*",
+    "*/htmlcov/*",
+    "*/coverage/*",
+    "setup.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
+show_missing = true
+skip_covered = false
+precision = 2
