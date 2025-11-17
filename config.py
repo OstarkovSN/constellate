@@ -20,7 +20,7 @@ class Config:
 
     # Secret key for session management and CSRF protection
     # In production, this should be set via environment variable
-    SECRET_KEY = os.environ.get("SECRET_KEY") or "dev-secret-key-change-in-production"
+    SECRET_KEY = os.environ.get("CONSTELLATE_SECRET_KEY")
 
     # Database configuration
     # Ensure instance directory exists
