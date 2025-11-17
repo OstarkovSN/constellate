@@ -3,6 +3,10 @@
 Defines the Article SQLAlchemy model for storing research articles.
 """
 
+import os
+
+from sqlalchemy import event
+
 from database import db
 
 
@@ -12,12 +16,13 @@ class Article(db.Model):
     Attributes:
         id: Primary key, unique article identifier
         title: Article title
-        content: Article content or description
+        summary: Article summary or description
         url: URL to the article (arXiv link, PDF, etc.)
         tags: Comma-separated tags for categorization
         user_id: Foreign key to the user who submitted the article
         created_at: Timestamp of article creation
         updated_at: Timestamp of last update
+        pdf_path: Path to the local PDF file
 
     """
 
@@ -25,15 +30,16 @@ class Article(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
-    content = db.Column(db.Text, nullable=True)
+    summary = db.Column(db.Text, nullable=True)
     url = db.Column(db.String(500), nullable=True)
     tags = db.Column(db.String(500), nullable=True)  # Comma-separated tags
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, server_default=db.func.now())
-    updated_at = db.Column(db.DateTime, nullable=False, server_default=db.func.now(),
-                          onupdate=db.func.now())
+    updated_at = db.Column(
+        db.DateTime, nullable=False, server_default=db.func.now(), onupdate=db.func.now(),
+    )
+    pdf_path = db.Column(db.String(500), nullable=True)
 
     def __repr__(self) -> str:
         """String representation of Article object."""
         return f"<Article {self.title}>"
-
