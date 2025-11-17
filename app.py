@@ -4,13 +4,13 @@ Main application entry point for the Constellate web application.
 Handles initialization of Flask app, database, and routes.
 """
 
-
 import click
 from flask import Flask, Response, abort, redirect, url_for
 from flask_login import LoginManager, current_user
 
 from config import Config
 from database import db, init_db
+from models.article import Article  # noqa: F401 - needed for SQLAlchemy relationship
 from models.user import User
 from routes.auth import auth_bp
 
