@@ -14,6 +14,7 @@ python = ">=3.10,<3.13"
 
 [tool.pixi.tasks]
 start = { cmd = "python app.py" }
+debug = { cmd = "python app.py --debug" }
 
 [tool.pixi.environments]
 dev = ["testing", "linting"]
